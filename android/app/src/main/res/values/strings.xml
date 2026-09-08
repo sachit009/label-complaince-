@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LM Scan</string>
+    <string name="camera_permission_required">Camera permission is required to scan packaged commodity labels.</string>
+</resources>

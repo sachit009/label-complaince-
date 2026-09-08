@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+  <title>LM Scan — Google Stitch Enterprise UI Bundle</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* Google Stitch & Material 3 Design Tokens */
+    :root {
+      --md-sys-color-surface: #0f131a;
+      --md-sys-color-surface-dim: #0a0d13;
+      --md-sys-color-surface-container-lowest: #0c0f16;
+      --md-sys-color-surface-container-low: #141822;
+      --md-sys-color-surface-container: #1b202c;
+      --md-sys-color-surface-container-high: #222837;
+      --md-sys-color-surface-container-highest: #2a3143;
+      
+      --md-sys-color-on-surface: #e2e8f0;
+      --md-sys-color-on-surface-variant: #94a3b8;
+      --md-sys-color-outline: #334155;
+      --md-sys-color-outline-variant: #1e293b;
+
+      --md-sys-color-primary: #38bdf8;
+      --md-sys-color-primary-container: #0369a1;
+      --md-sys-color-on-primary: #082f49;
+      --md-sys-color-on-primary-container: #e0f2fe;
+
+      --md-sys-color-success: #22c55e;
+      --md-sys-color-success-container: rgba(34, 197, 94, 0.16);
+      --md-sys-color-on-success-container: #86efac;
+
+      --md-sys-color-error: #ef4444;
+      --md-sys-color-error-container: rgba(239, 68, 68, 0.16);
+      --md-sys-color-on-error-container: #fca5a5;
+
+      --md-sys-color-warning: #f59e0b;
+      --md-sys-color-warning-container: rgba(245, 158, 11, 0.16);
+      --md-sys-color-on-warning-container: #fde68a;
+
+      --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      --radius-xs: 4px;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+
+      --elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.25);
+      --elevation-2: 0 4px 10px 2px rgba(0, 0, 0, 0.3);
+      --elevation-glow: 0 0 24px rgba(56, 189, 248, 0.35);
+    }
+
+    [data-theme="light"] {
+      --md-sys-color-surface: #f8fafc;
+      --md-sys-color-surface-dim: #edf2f7;
+      --md-sys-color-surface-container-lowest: #ffffff;
+      --md-sys-color-surface-container-low: #f1f5f9;
+      --md-sys-color-surface-container: #e2e8f0;
+      --md-sys-color-surface-container-high: #cbd5e1;
+      --md-sys-color-surface-container-highest: #94a3b8;
+
+      --md-sys-color-on-surface: #0f172a;
+      --md-sys-color-on-surface-variant: #475569;
+      --md-sys-color-outline: #cbd5e1;
+      --md-sys-color-outline-variant: #e2e8f0;
+
+      --md-sys-color-primary: #0284c7;
+      --md-sys-color-primary-container: #e0f2fe;
+      --md-sys-color-on-primary: #ffffff;
+      --md-sys-color-on-primary-container: #0369a1;
+
+      --md-sys-color-success: #16a34a;
+      --md-sys-color-success-container: #dcfce7;
+      --md-sys-color-on-success-container: #15803d;
+
+      --md-sys-color-error: #dc2626;
+      --md-sys-color-error-container: #fee2e2;
+      --md-sys-color-on-error-container: #b91c1c;
+
+      --md-sys-color-warning: #d97706;
+      --md-sys-color-warning-container: #fef3c7;
+      --md-sys-color-on-warning-container: #b45309;
+
+      --elevation-1: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+      --elevation-2: 0 4px 8px -1px rgba(0, 0, 0, 0.08);
+      --elevation-glow: 0 0 20px rgba(2, 132, 199, 0.2);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      min-height: 100dvh;
+      line-height: 1.5;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .app-wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding-bottom: 90px;
+    }
+
+    /* Header */
+    header.stitch-appbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: rgba(15, 19, 26, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    }
+
+    [data-theme="light"] header.stitch-appbar {
+      background: rgba(248, 250, 252, 0.88);
+    }
+
+    .brand-section { display: flex; align-items: center; gap: 12px; }
+    .appbar-logo {
+      width: 38px; height: 38px; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--md-sys-color-primary), #0284c7);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--elevation-glow);
+    }
+
+    .appbar-title h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+    .appbar-title p { font-family: var(--font-mono); font-size: 11px; color: var(--md-sys-color-on-surface-variant); }
+
+    .icon-button {
+      background: var(--md-sys-color-surface-container-low);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      color: var(--md-sys-color-on-surface-variant);
+      border-radius: var(--radius-full);
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .icon-button:hover { background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface); }
+    .icon-button:active { transform: scale(0.92); }
+
+    /* Content & Views */
+    main.stitch-content { flex: 1; padding: 16px; }
+    .view-panel { display: flex; flex-direction: column; gap: 18px; animation: fadeIn 0.2s ease-out; }
+    .view-panel.hidden { display: none !important; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-headline h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 2px; }
+    .section-headline p { font-size: 13px; color: var(--md-sys-color-on-surface-variant); }
+
+    /* Viewfinder Card */
+    .viewfinder-card {
+      position: relative; aspect-ratio: 4 / 3; width: 100%;
+      background: #000; border-radius: var(--radius-lg); overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--elevation-2); border: 2px dashed var(--md-sys-color-outline);
+    }
+    .viewfinder-card.drag-over { border-color: var(--md-sys-color-primary); background: var(--md-sys-color-surface-container); }
+
+    .viewfinder-empty-state { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 24px; text-align: center; }
+    .viewfinder-empty-state svg { color: var(--md-sys-color-primary); }
+    .viewfinder-empty-state h3 { font-size: 14px; font-weight: 600; }
+    .viewfinder-empty-state p { font-size: 12px; color: var(--md-sys-color-on-surface-variant); max-width: 280px; }
+    .viewfinder-preview-img { width: 100%; height: 100%; object-fit: contain; background: #000; }
+
+    /* Target Reticle */
+    .target-guide { position: absolute; inset: 16px; pointer-events: none; }
+    .guide-corner { position: absolute; width: 26px; height: 26px; border-color: var(--md-sys-color-primary); }
+    .guide-corner.top-left { top: 0; left: 0; border-top: 3px solid; border-left: 3px solid; border-top-left-radius: 6px; }
+    .guide-corner.top-right { top: 0; right: 0; border-top: 3px solid; border-right: 3px solid; border-top-right-radius: 6px; }
+    .guide-corner.bottom-left { bottom: 0; left: 0; border-bottom: 3px solid; border-left: 3px solid; border-bottom-left-radius: 6px; }
+    .guide-corner.bottom-right { bottom: 0; right: 0; border-bottom: 3px solid; border-right: 3px solid; border-bottom-right-radius: 6px; }
+
+    /* Laser Scanner */
+    .laser-scanner { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .laser-beam { position: absolute; left: 0; right: 0; height: 2px; background: #38bdf8; box-shadow: 0 0 16px #38bdf8; animation: laserSweep 2s infinite ease-in-out; }
+    .laser-glow { position: absolute; left: 0; right: 0; height: 80px; background: linear-gradient(to bottom, transparent, rgba(56, 189, 248, 0.25), transparent); animation: laserSweep 2s infinite ease-in-out; }
+    @keyframes laserSweep { 0% { top: 0%; } 50% { top: 96%; } 100% { top: 0%; } }
+
+    /* Buttons */
+    .button-row { display: flex; gap: 10px; }
+    .btn-stitch {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 18px; font-size: 14px; font-weight: 600; border-radius: var(--radius-full);
+      border: 1px solid transparent; cursor: pointer; transition: all 0.2s ease; text-decoration: none;
+    }
+    .btn-stitch:active { transform: scale(0.97); }
+    .btn-stitch.primary { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); box-shadow: var(--elevation-1); }
+    .btn-stitch.primary:hover:not(:disabled) { box-shadow: var(--elevation-glow); }
+    .btn-stitch.tonal { background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface); border-color: var(--md-sys-color-outline-variant); }
+    .btn-stitch.tonal:hover:not(:disabled) { background: var(--md-sys-color-surface-container-highest); }
+    .btn-stitch.outlined { background: transparent; border-color: var(--md-sys-color-outline); color: var(--md-sys-color-on-surface); }
+    .flex-1 { flex: 1; } .flex-2 { flex: 2; } .w-100 { width: 100%; }
+
+    /* Cards */
+    .stitch-card { background: var(--md-sys-color-surface-container-low); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--radius-lg); padding: 16px; }
+    .sample-grid-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .sample-tile {
+      background: var(--md-sys-color-surface-container); border: 1px solid var(--md-sys-color-outline-variant);
+      border-radius: var(--radius-md); padding: 10px 12px; cursor: pointer; transition: all 0.2s ease;
+    }
+    .sample-tile:hover { border-color: var(--md-sys-color-primary); transform: translateY(-1px); }
+    .sample-tile .tile-title { font-size: 13px; font-weight: 600; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .sample-tile .tile-subtitle { font-family: var(--font-mono); font-size: 10.5px; color: var(--md-sys-color-on-surface-variant); display: block; }
+
+    /* Result View Components */
+    .result-banner { border-radius: var(--radius-lg); padding: 18px; border: 1px solid; display: flex; flex-direction: column; gap: 12px; }
+    .result-banner.compliant { background: var(--md-sys-color-success-container); border-color: var(--md-sys-color-success); color: var(--md-sys-color-on-success-container); }
+    .result-banner.non_compliant { background: var(--md-sys-color-error-container); border-color: var(--md-sys-color-error); color: var(--md-sys-color-on-error-container); }
+    .result-banner.needs_review { background: var(--md-sys-color-warning-container); border-color: var(--md-sys-color-warning); color: var(--md-sys-color-on-warning-container); }
+
+    .status-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--radius-full); font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .status-chip.compliant { background: var(--md-sys-color-success); color: #fff; }
+    .status-chip.non_compliant { background: var(--md-sys-color-error); color: #fff; }
+    .status-chip.needs_review { background: var(--md-sys-color-warning); color: #fff; }
+
+    .rule-row-card {
+      background: var(--md-sys-color-surface-container-low); border: 1px solid var(--md-sys-color-outline-variant);
+      border-radius: var(--radius-md); padding: 14px 16px; display: flex; gap: 14px;
+    }
+    .rule-verdict-icon { width: 28px; height: 28px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .rule-row-card.pass .rule-verdict-icon { background: var(--md-sys-color-success-container); color: var(--md-sys-color-success); }
+    .rule-row-card.fail .rule-verdict-icon { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); }
+    .rule-row-card.review .rule-verdict-icon { background: var(--md-sys-color-warning-container); color: var(--md-sys-color-warning); }
+
+    .rule-extracted-value {
+      font-family: var(--font-mono); font-size: 12px; background: var(--md-sys-color-surface-container);
+      padding: 6px 10px; border-radius: var(--radius-sm); border-left: 3px solid var(--md-sys-color-primary); word-break: break-word;
+    }
+
+    .issues-badge-list { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+    .issues-badge-list li { font-size: 11.5px; padding: 4px 8px; border-radius: var(--radius-xs); }
+    .issues-badge-list li.fail-msg { background: var(--md-sys-color-error-container); color: var(--md-sys-color-on-error-container); border: 1px solid var(--md-sys-color-error); }
+    .issues-badge-list li.warn-msg { background: var(--md-sys-color-warning-container); color: var(--md-sys-color-on-warning-container); border: 1px solid var(--md-sys-color-warning); }
+
+    /* Bottom Navigation */
+    nav.stitch-bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 60;
+      background: rgba(15, 19, 26, 0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--md-sys-color-outline-variant); padding-bottom: max(6px, env(safe-area-inset-bottom));
+      display: flex; justify-content: center;
+    }
+    [data-theme="light"] nav.stitch-bottom-nav { background: rgba(248, 250, 252, 0.94); }
+    .bottom-nav-inner { max-width: 680px; width: 100%; display: flex; align-items: center; justify-content: space-around; padding: 6px 12px; }
+
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 3px; background: transparent; border: none;
+      color: var(--md-sys-color-on-surface-variant); font-size: 11px; font-weight: 600; cursor: pointer;
+      padding: 6px 14px; border-radius: var(--radius-full); position: relative; transition: all 0.2s;
+    }
+    .nav-item.active { color: var(--md-sys-color-primary); }
+    .nav-item.active .nav-icon-pill { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
+    .nav-icon-pill { width: 48px; height: 28px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; }
+    .nav-badge { position: absolute; top: 4px; right: 14px; background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: var(--radius-full); }
+
+    /* Modal Sheet */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+    .modal-sheet { background: var(--md-sys-color-surface-container); border: 1px solid var(--md-sys-color-outline); border-top-left-radius: var(--radius-lg); border-top-right-radius: var(--radius-lg); width: 100%; max-width: 680px; max-height: 85dvh; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+
+    .stitch-input { background: var(--md-sys-color-surface-container-high); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--radius-md); padding: 12px 14px; font-family: var(--font-sans); font-size: 13.5px; color: var(--md-sys-color-on-surface); outline: none; }
+    .stitch-input:focus { border-color: var(--md-sys-color-primary); }
+
+    .stitch-toast { position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%) translateY(50px); background: var(--md-sys-color-surface-container-highest); color: var(--md-sys-color-on-surface); border: 1px solid var(--md-sys-color-outline); padding: 10px 20px; border-radius: var(--radius-full); font-size: 13px; font-weight: 500; z-index: 200; opacity: 0; transition: all 0.25s; }
+    .stitch-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="app-wrapper">
+
+    <!-- Top App Bar -->
+    <header class="stitch-appbar">
+      <div class="brand-section">
+        <button type="button" id="btnBackAppbar" class="icon-button hidden" aria-label="Back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        </button>
+        <span class="appbar-logo" id="appbarLogo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+        </span>
+        <div class="appbar-title">
+          <h1>LM Scan</h1>
+          <p>Legal Metrology (PC) Rules, 2011</p>
+        </div>
+      </div>
+
+      <div class="appbar-actions">
+        <button type="button" id="btnThemeToggle" class="icon-button" title="Toggle Theme" aria-label="Toggle Theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="stitch-content">
+
+      <!-- View: SCAN -->
+      <section id="viewScan" class="view-panel">
+        <div class="section-headline">
+          <h2>Label Compliance Inspector</h2>
+          <p>Scan or upload a packaged commodity declaration panel to verify mandatory packaging rules.</p>
+        </div>
+
+        <div class="viewfinder-card" id="viewfinderCard">
+          <div class="viewfinder-empty-state" id="viewfinderPlaceholder">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+            <h3>Capture Declaration Panel</h3>
+            <p>Upload a product label or choose a demo package below to inspect compliance.</p>
+          </div>
+
+          <img id="previewImg" class="viewfinder-preview-img hidden" alt="Preview" />
+
+          <div class="target-guide">
+            <span class="guide-corner top-left"></span>
+            <span class="guide-corner top-right"></span>
+            <span class="guide-corner bottom-left"></span>
+            <span class="guide-corner bottom-right"></span>
+          </div>
+
+          <div class="laser-scanner hidden" id="laserScanner">
+            <div class="laser-glow"></div>
+            <div class="laser-beam"></div>
+          </div>
+        </div>
+
+        <input type="file" id="fileUploadInput" accept="image/*" style="display:none" />
+
+        <div class="button-row" id="initialButtonRow">
+          <button type="button" class="btn-stitch primary flex-2" id="btnUploadAction">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload Packaging Image
+          </button>
+        </div>
+
+        <div class="button-row hidden" id="selectedButtonRow">
+          <button type="button" class="btn-stitch tonal flex-1" id="btnRetakePhoto">Retake</button>
+          <button type="button" class="btn-stitch primary flex-2" id="btnPerformScan">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Verify Compliance
+          </button>
+        </div>
+
+        <!-- 1-Click FMCG Samples -->
+        <div class="stitch-card">
+          <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+            <h3 style="font-size:13px; font-weight:700; text-transform:uppercase; color:var(--md-sys-color-on-surface-variant);">Indian FMCG Demo Library</h3>
+            <span style="font-size:11px; color:var(--md-sys-color-primary); font-weight:600;">1-Click Demo</span>
+          </div>
+          <div class="sample-grid-tiles" id="sampleGrid"></div>
+        </div>
+      </section>
+
+      <!-- View: RESULT -->
+      <section id="viewResult" class="view-panel hidden">
+        <div id="resultContainer" class="view-panel"></div>
+        <button type="button" class="btn-stitch primary w-100" id="btnScanAnotherBottom">
+          Scan Another Package
+        </button>
+      </section>
+
+      <!-- View: AUDIT LOG -->
+      <section id="viewHistory" class="view-panel hidden">
+        <div class="section-headline">
+          <h2>Inspection Audit Records</h2>
+          <p>Historical compliance logs and statutory violation analysis.</p>
+        </div>
+        <ul class="issues-badge-list" id="auditList" style="display:flex; flex-direction:column; gap:8px;"></ul>
+      </section>
+
+      <!-- View: STANDARDS -->
+      <section id="viewRules" class="view-panel hidden">
+        <div class="section-headline">
+          <h2>Legal Metrology Standards</h2>
+          <p>Statutory rule guide and Schedule II font size calculator.</p>
+        </div>
+        <div class="stitch-card">
+          <h3 style="font-size:14px; font-weight:700; color:var(--md-sys-color-primary); margin-bottom:8px;">Rule 6(1) Mandatory Declarations</h3>
+          <p style="font-size:12.5px; color:var(--md-sys-color-on-surface-variant); line-height:1.6;">
+            1. <strong>Rule 6(1)(a):</strong> Name & complete address of Manufacturer / Packer / Importer + Country of Origin.<br>
+            2. <strong>Rule 6(1)(b):</strong> Generic or common name of the commodity.<br>
+            3. <strong>Rule 6(1)(c):</strong> Net quantity in standard SI metric units (g, kg, ml, L, N).<br>
+            4. <strong>Rule 6(1)(d):</strong> Month & Year of manufacture / packing (MFD/PKD).<br>
+            5. <strong>Rule 6(1)(e):</strong> Maximum Retail Price (MRP) with "(inclusive of all taxes)" + Unit Sale Price (USP).<br>
+            6. <strong>Rule 6(1)(f):</strong> Consumer care details (helpline, email, postal address).
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="stitch-bottom-nav">
+      <div class="bottom-nav-inner">
+        <button type="button" class="nav-item active" data-tab="scan">
+          <div class="nav-icon-pill">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+          </div>
+          <span>Scan</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="history">
+          <div class="nav-icon-pill">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+          </div>
+          <span>Audit Log</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="rules">
+          <div class="nav-icon-pill">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <span>Standards</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <div class="stitch-toast" id="toast"></div>
+
+  <!-- Self-Contained JavaScript Engine -->
+  <script>
+    const SAMPLES = [
+      {
+        name: "Maggi 2-Min Noodles",
+        badge: "Compliant (6/6)",
+        cat: "FMCG / Food",
+        status: "compliant",
+        product: "Maggi 2-Minute Noodles - Masala",
+        score: 100,
+        fields: [
+          { rule: "Rule 6(1)(a)", label: "Manufacturer Details", val: "Nestlé India Ltd, World Trade Centre, New Delhi 110001. Origin: India", verdict: "pass", issues: [] },
+          { rule: "Rule 6(1)(b)", label: "Generic Commodity Name", val: "Instant Noodles with Seasoning", verdict: "pass", issues: [] },
+          { rule: "Rule 6(1)(c)", label: "Net Quantity (SI Units)", val: "70 g", verdict: "pass", issues: [] },
+          { rule: "Rule 6(1)(d)", label: "Month & Year of Mfg", val: "MFD 08/2026", verdict: "pass", issues: [] },
+          { rule: "Rule 6(1)(e)", label: "MRP & Unit Sale Price", val: "MRP ₹ 14.00 (inclusive of all taxes) · USP ₹ 0.20 / g", verdict: "pass", issues: [] },
+          { rule: "Rule 6(1)(f)", label: "Consumer Care Contact", val: "Tel: 1800-103-1947 · Email: wecare@in.nestle.com", verdict: "pass", issues: [] }
+        ]
+      },
+      {
+        name: "Cranberry Cookies",
+        badge: "Violations (4/6)",
+        cat: "Bakery / Violation",
+        status: "non_compliant",
+        product: "Chef's Delight Cranberry Cookies",
+        score: 67,
+        fields: [
+          { rule: "Rule 6(1)(a)", label: "Manufacturer Details", val: "Delight Bakery Works, Gala 4, MIDC Andheri East, Mumbai", verdict: "pass", issues: [] },
+          { rule: "Rule 6(1)(b)", label: "Generic Commodity Name", val: "Cookies", verdict: "pass", issues: [] },
+          { rule: "Rule 6(1)(c)", label: "Net Quantity (SI Units)", val: "150 gms", verdict: "fail", issues: ["Illegal unit symbol '150 gms'. Rule 6(1)(c) strictly mandates standard symbol 'g' for gram."] },
+          { rule: "Rule 6(1)(d)", label: "Month & Year of Mfg", val: "07/2026", verdict: "pass", issues: [] },
+          { rule: "Rule 6(1)(e)", label: "MRP & Unit Sale Price", val: "Rs 120.00", verdict: "fail", issues: ["Missing required wording '(inclusive of all taxes)' near the price."] },
+          { rule: "Rule 6(1)(f)", label: "Consumer Care Contact", val: "contact@delightbakery.in", verdict: "review", issues: ["Missing helpline telephone number for customer complaints."] }
+        ]
+      }
+    ];
+
+    let currentScan = SAMPLES[0];
+    let activeTab = 'scan';
+
+    function init() {
+      renderSamples();
+      bindEvents();
+    }
+
+    function renderSamples() {
+      const grid = document.getElementById('sampleGrid');
+      grid.innerHTML = '';
+      SAMPLES.forEach((s, idx) => {
+        const d = document.createElement('div');
+        d.className = 'sample-tile';
+        d.innerHTML = `<span class="tile-title">${s.name}</span><span class="tile-subtitle">${s.badge} · ${s.cat}</span>`;
+        d.onclick = () => loadSample(idx);
+        grid.appendChild(d);
+      });
+    }
+
+    function loadSample(idx) {
+      currentScan = SAMPLES[idx];
+      document.getElementById('viewfinderPlaceholder').classList.add('hidden');
+      document.getElementById('previewImg').src = generateMockImage(currentScan);
+      document.getElementById('previewImg').classList.remove('hidden');
+      document.getElementById('initialButtonRow').classList.add('hidden');
+      document.getElementById('selectedButtonRow').classList.remove('hidden');
+      showToast(`Loaded ${currentScan.name}`);
+    }
+
+    function generateMockImage(s) {
+      const c = document.createElement('canvas');
+      c.width = 500; c.height = 360;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(0,0,500,360);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(20, 20, 460, 320);
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.fillText(s.product, 40, 60);
+      ctx.font = '12px monospace';
+      ctx.fillStyle = '#334155';
+      s.fields.forEach((f, i) => {
+        ctx.fillText(`${f.rule}: ${f.val.substring(0, 48)}`, 40, 100 + (i * 28));
+      });
+      return c.toDataURL();
+    }
+
+    function bindEvents() {
+      document.querySelectorAll('.stitch-bottom-nav .nav-item').forEach(btn => {
+        btn.onclick = () => switchTab(btn.dataset.tab);
+      });
+
+      document.getElementById('btnBackAppbar').onclick = () => switchTab('scan');
+      document.getElementById('btnRetakePhoto').onclick = resetCapture;
+      document.getElementById('btnScanAnotherBottom').onclick = () => { resetCapture(); switchTab('scan'); };
+      document.getElementById('btnPerformScan').onclick = performScan;
+      document.getElementById('btnUploadAction').onclick = () => loadSample(0);
+
+      document.getElementById('btnThemeToggle').onclick = () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+      };
+    }
+
+    function switchTab(t) {
+      activeTab = t;
+      document.querySelectorAll('.stitch-bottom-nav .nav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+      document.getElementById('viewScan').classList.toggle('hidden', t !== 'scan');
+      document.getElementById('viewResult').classList.toggle('hidden', t !== 'result');
+      document.getElementById('viewHistory').classList.toggle('hidden', t !== 'history');
+      document.getElementById('viewRules').classList.toggle('hidden', t !== 'rules');
+
+      document.getElementById('btnBackAppbar').classList.toggle('hidden', t !== 'result');
+      document.getElementById('appbarLogo').classList.toggle('hidden', t === 'result');
+      if (t === 'history') renderHistory();
+    }
+
+    function performScan() {
+      document.getElementById('laserScanner').classList.remove('hidden');
+      setTimeout(() => {
+        document.getElementById('laserScanner').classList.add('hidden');
+        renderResult(currentScan);
+        switchTab('result');
+      }, 700);
+    }
+
+    function renderResult(s) {
+      const isPass = s.status === 'compliant';
+      let cards = '';
+      s.fields.forEach(f => {
+        const icon = f.verdict === 'pass' ? '✓' : (f.verdict === 'fail' ? '✕' : '⚠');
+        cards += `
+          <div class="rule-row-card ${f.verdict}">
+            <div class="rule-verdict-icon" style="font-weight:bold">${icon}</div>
+            <div style="flex:1; display:flex; flex-direction:column; gap:4px;">
+              <div style="display:flex; justify-content:space-between; font-size:13.5px; font-weight:600;">
+                <span>${f.label}</span><span style="font-family:monospace; font-size:11px; opacity:0.7">${f.rule}</span>
+              </div>
+              <div class="rule-extracted-value">${f.val}</div>
+              ${f.issues.length ? `<ul class="issues-badge-list">${f.issues.map(iss => `<li class="fail-msg">⚠️ ${iss}</li>`).join('')}</ul>` : ''}
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById('resultContainer').innerHTML = `
+        <div class="result-banner ${s.status}">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <div style="font-size:11px; opacity:0.8; font-family:monospace">INSPECTION REPORT #50482</div>
+              <h2 style="font-size:18px; font-weight:700;">${s.product}</h2>
+            </div>
+            <span class="status-chip ${s.status}">${isPass ? 'PASS · Compliant' : 'FAIL · Non-Compliant'}</span>
+          </div>
+          <div style="font-size:12px; border-top:1px solid rgba(255,255,255,0.15); padding-top:6px;">
+            Compliance Score: <strong>${s.score}%</strong> (Legal Metrology Packaged Commodities Rules, 2011)
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">${cards}</div>
+      `;
+    }
+
+    function renderHistory() {
+      const list = document.getElementById('auditList');
+      list.innerHTML = SAMPLES.map((s, i) => `
+        <li style="background:var(--md-sys-color-surface-container-low); border:1px solid var(--md-sys-color-outline-variant); border-radius:var(--radius-md); padding:12px 14px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:13.5px; font-weight:600;">${s.product}</div>
+            <div style="font-size:11px; color:var(--md-sys-color-on-surface-variant); font-family:monospace">Score: ${s.score}% · ${s.status}</div>
+          </div>
+          <span class="status-chip ${s.status}" style="font-size:9px; padding:2px 8px;">${s.status.toUpperCase()}</span>
+        </li>
+      `).join('');
+    }
+
+    function resetCapture() {
+      document.getElementById('previewImg').classList.add('hidden');
+      document.getElementById('viewfinderPlaceholder').classList.remove('hidden');
+      document.getElementById('initialButtonRow').classList.remove('hidden');
+      document.getElementById('selectedButtonRow').classList.add('hidden');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>

@@ -1,8 +1,55 @@
+# Node & Frontend
 node_modules/
-build/
 dist/
 coverage/
-.DS_Store
-*.log
 .env*
 !.env.example
+
+# Python & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# SQLite & Runtime data
+scans.db
+scans.db-wal
+scans.db-shm
+*.sqlite3
+
+# Operating System & IDE
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Android build outputs
+.gradle/
+build/
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+*.apk
+*.aab
+
+# iOS & Xcode outputs
+DerivedData/
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Temporary files
+*.log
+scratch/

@@ -1,0 +1,23 @@
+{
+  "name": "LM Scan — Legal Metrology Label Checker",
+  "short_name": "LM Scan",
+  "description": "Legal Metrology (Packaged Commodities) Rules, 2011 Compliance Scanner",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1117",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

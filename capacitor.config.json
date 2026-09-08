@@ -1,0 +1,24 @@
+{
+  "appId": "com.lmscan.compliance",
+  "appName": "LM Scan",
+  "webDir": "static",
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": ["*"]
+  },
+  "plugins": {
+    "Camera": {
+      "permissions": ["camera", "photos"]
+    }
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "ios": {
+    "contentInset": "always",
+    "allowsLinkPreview": false,
+    "handleApplicationURL": true
+  }
+}

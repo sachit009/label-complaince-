@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+  <title>LM Scan — Legal Metrology Label Checker</title>
+  <meta name="description" content="Enterprise compliance audit system for packaged commodities verifying the mandatory declarations under Legal Metrology (Packaged Commodities) Rules, 2011." />
+  <meta name="theme-color" content="#0f131a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="LM Scan" />
+
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/icon.png" />
+  <link rel="icon" href="/icon.png" type="image/png" />
+  <link rel="stylesheet" href="/css/fonts.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="app-wrapper">
+
+    <!-- Top App Bar (Google Stitch Style) -->
+    <header class="stitch-appbar">
+      <div class="brand-section">
+        <button type="button" id="btnBackAppbar" class="icon-button hidden" aria-label="Go Back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        </button>
+        <span class="appbar-logo" id="appbarLogo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+        </span>
+        <div class="appbar-title">
+          <h1>LM Scan</h1>
+          <p>Legal Metrology (PC) Rules, 2011</p>
+        </div>
+      </div>
+
+      <div class="appbar-actions">
+        <button type="button" id="btnThemeToggle" class="icon-button" title="Toggle Theme" aria-label="Toggle Theme"></button>
+        <button type="button" id="btnOpenSettings" class="icon-button" title="Engine Settings" aria-label="Settings">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Views Container -->
+    <main class="stitch-content">
+
+      <!-- View: SCAN -->
+      <section id="viewScan" class="view-panel">
+        <div class="section-headline">
+          <h2>Label Compliance Inspector</h2>
+          <p>Scan or upload a packaged product declaration panel to verify the 6 statutory declarations.</p>
+        </div>
+
+        <!-- Viewfinder Card -->
+        <div class="viewfinder-card" id="viewfinderCard">
+          <div class="viewfinder-empty-state" id="viewfinderPlaceholder">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+            <h3>Capture Declaration Panel</h3>
+            <p>Open camera, upload from photo library, or drag & drop packaging image here.</p>
+          </div>
+
+          <!-- Video live camera stream -->
+          <video id="cameraLiveStream" class="hidden" autoplay playsinline muted></video>
+
+          <!-- Captured preview image -->
+          <img id="previewImg" class="viewfinder-preview-img hidden" alt="Preview" />
+
+          <!-- Target Guide -->
+          <div class="target-guide">
+            <span class="guide-corner top-left"></span>
+            <span class="guide-corner top-right"></span>
+            <span class="guide-corner bottom-left"></span>
+            <span class="guide-corner bottom-right"></span>
+          </div>
+
+          <!-- Laser Scanner Effect -->
+          <div class="laser-scanner hidden" id="laserScanner">
+            <div class="laser-glow"></div>
+            <div class="laser-beam"></div>
+          </div>
+
+          <!-- Camera Action Dock -->
+          <div class="camera-action-dock hidden" id="cameraActionDock">
+            <button type="button" class="cam-round-btn" id="btnSwitchCamera" title="Flip Camera">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            </button>
+            <button type="button" class="cam-round-btn shutter-primary" id="btnShutterAction" title="Snap Photo">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="8"/></svg>
+            </button>
+            <button type="button" class="cam-round-btn" id="btnToggleTorch" title="Flashlight">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </button>
+            <button type="button" class="cam-round-btn" id="btnCloseCamera" title="Close">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hidden Native File Inputs -->
+        <input type="file" id="fileUploadInput" accept="image/*" class="hidden" />
+        <input type="file" id="cameraCaptureInput" accept="image/*" capture="environment" class="hidden" />
+
+        <!-- Initial Buttons Row -->
+        <div class="button-row" id="initialButtonRow">
+          <button type="button" class="btn-stitch primary flex-2" id="btnLaunchLiveCam">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+            Live Camera
+          </button>
+          <button type="button" class="btn-stitch tonal flex-1" id="btnSelectFile">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload
+          </button>
+        </div>
+
+        <!-- Image Selected Buttons Row -->
+        <div class="button-row hidden" id="selectedButtonRow">
+          <button type="button" class="btn-stitch tonal flex-1" id="btnRetakePhoto">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Retake
+          </button>
+          <button type="button" class="btn-stitch primary flex-2" id="btnPerformScan">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Check Compliance
+          </button>
+        </div>
+
+        <!-- Quick Demo Test Gallery -->
+        <div class="stitch-card samples-section">
+          <div class="samples-title-row">
+            <h3>Indian FMCG Test Library</h3>
+            <span style="font-size: 11px; color: var(--md-sys-color-primary); font-weight: 600;">1-Click Demo</span>
+          </div>
+          <div class="sample-grid-tiles" id="sampleGridTiles"></div>
+        </div>
+      </section>
+
+      <!-- View: SCAN RESULT -->
+      <section id="viewResult" class="view-panel hidden">
+        <div id="resultContainer" class="view-panel"></div>
+        <button type="button" class="btn-stitch primary w-100" id="btnScanAnotherBottom" style="margin-top: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+          Scan Another Package
+        </button>
+      </section>
+
+      <!-- View: AUDIT LOG (HISTORY) -->
+      <section id="viewHistory" class="view-panel hidden">
+        <div class="section-headline">
+          <h2>Inspection Audit Records</h2>
+          <p>Complete regulatory compliance history and violation diagnostics.</p>
+        </div>
+
+        <!-- Analytics Stats Row -->
+        <div class="stats-grid">
+          <div class="stat-tile">
+            <div class="val" id="statTotal">0</div>
+            <div class="lbl">Total Scans</div>
+          </div>
+          <div class="stat-tile">
+            <div class="val" id="statPass" style="color: var(--md-sys-color-success);">0%</div>
+            <div class="lbl">Pass Rate</div>
+          </div>
+          <div class="stat-tile">
+            <div class="val" id="statFail" style="color: var(--md-sys-color-error);">0</div>
+            <div class="lbl">Violations</div>
+          </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="historySearch" class="stitch-input flex-2" placeholder="Search product or brand..." />
+          <select id="historyFilter" class="stitch-input flex-1">
+            <option value="all">All</option>
+            <option value="compliant">Compliant</option>
+            <option value="non_compliant">Violations</option>
+            <option value="needs_review">Review</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" class="btn-stitch tonal" id="btnExportCSV" style="font-size: 11.5px; padding: 6px 14px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV
+          </button>
+          <button type="button" class="btn-stitch outlined" id="btnClearAllHistory" style="font-size: 11.5px; padding: 6px 14px; color: var(--md-sys-color-error); border-color: var(--md-sys-color-error);">
+            Clear All
+          </button>
+        </div>
+
+        <ul class="history-records-list" id="historyList"></ul>
+      </section>
+
+      <!-- View: STANDARDS & PDP CALCULATOR -->
+      <section id="viewRules" class="view-panel hidden">
+        <div class="section-headline">
+          <h2>Legal Metrology Standards</h2>
+          <p>Statutory rule guide and Principal Display Panel (PDP) font size calculator.</p>
+        </div>
+
+        <!-- PDP Calculator Card -->
+        <div class="stitch-card" style="display: flex; flex-direction: column; gap: 12px;">
+          <h3 style="font-size: 14px; font-weight: 700; color: var(--md-sys-color-primary);">
+            Schedule II — Numeral & Font Size Calculator
+          </h3>
+          <p style="font-size: 12px; color: var(--md-sys-color-on-surface-variant);">
+            Calculate mandatory minimum height of numerals for net quantity & MRP declarations under Rule 7.
+          </p>
+
+          <div style="display: flex; gap: 8px;">
+            <div class="form-field flex-2">
+              <label for="pdpAreaInput">Package PDP Area (in cm²)</label>
+              <input type="number" id="pdpAreaInput" class="stitch-input" placeholder="e.g. 120" value="120" />
+            </div>
+            <div class="form-field flex-1">
+              <label for="pdpTypeSelect">Package Type</label>
+              <select id="pdpTypeSelect" class="stitch-input">
+                <option value="printed">Standard Printed</option>
+                <option value="moulded">Blown / Moulded</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="button" class="btn-stitch primary" id="btnCalculatePdp" style="align-self: flex-start; padding: 8px 18px; font-size: 12.5px;">
+            Calculate Minimum Height
+          </button>
+
+          <div id="pdpResultBox" class="hidden" style="background: var(--md-sys-color-surface-container); border: 1px solid var(--md-sys-color-primary); border-radius: var(--radius-sm); padding: 12px;"></div>
+        </div>
+
+        <!-- Rule 6(1) Summary List -->
+        <details class="stitch-accordion" open>
+          <summary>
+            <span>The 6 Mandatory Declarations (Rule 6)</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-body">
+            <div class="rule-info-item">
+              <span class="rule-badge-tag">Rule 6(1)(a)</span>
+              <div><strong>Manufacturer / Packer / Importer:</strong> Complete name and postal address with 6-digit PIN code + Country of Origin.</div>
+            </div>
+            <div class="rule-info-item">
+              <span class="rule-badge-tag">Rule 6(1)(b)</span>
+              <div><strong>Common / Generic Name:</strong> Standard commodity name distinct from brand trade name.</div>
+            </div>
+            <div class="rule-info-item">
+              <span class="rule-badge-tag">Rule 6(1)(c)</span>
+              <div><strong>Net Quantity in SI Units:</strong> Standard units (g, kg, ml, L, N). Illegal abbreviations like 'gms' or 'kgs' violate Section 36.</div>
+            </div>
+            <div class="rule-info-item">
+              <span class="rule-badge-tag">Rule 6(1)(d)</span>
+              <div><strong>Month & Year of Manufacture:</strong> Format MM/YYYY or Month YYYY (MFD / PKD / Date of Import).</div>
+            </div>
+            <div class="rule-info-item">
+              <span class="rule-badge-tag">Rule 6(1)(e)</span>
+              <div><strong>MRP & Unit Sale Price (USP):</strong> Maximum Retail Price with "(inclusive of all taxes)" + Unit Sale Price (2022 Amendment).</div>
+            </div>
+            <div class="rule-info-item">
+              <span class="rule-badge-tag">Rule 6(1)(f)</span>
+              <div><strong>Consumer Care:</strong> Name, address, helpline telephone/toll-free number, and active email for complaints.</div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Section 36 Penalty Reference Card -->
+        <div class="stitch-card" style="background: var(--md-sys-color-error-container); border-color: var(--md-sys-color-error); color: var(--md-sys-color-on-error-container);">
+          <h4 style="font-size: 13.5px; font-weight: 700; margin-bottom: 6px;">Statutory Penalties (Legal Metrology Act, 2009)</h4>
+          <ul style="padding-left: 18px; font-size: 12px; display: flex; flex-direction: column; gap: 4px;">
+            <li><strong>First Offence:</strong> Fine up to ₹25,000 for non-standard or missing declarations.</li>
+            <li><strong>Second Offence:</strong> Fine up to ₹50,000.</li>
+            <li><strong>Subsequent Offences:</strong> Fine up to ₹1,00,000 or imprisonment up to 1 year, or both.</li>
+            <li><strong>Inspector Powers:</strong> Power to seize non-compliant commodities under Section 15.</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar (Google Stitch / Material 3) -->
+    <nav class="stitch-bottom-nav">
+      <div class="bottom-nav-inner">
+        <button type="button" class="nav-item active" data-tab="scan" aria-label="Scan Tab">
+          <div class="nav-icon-pill">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+          </div>
+          <span>Scan</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="history" aria-label="Audit Log Tab">
+          <div class="nav-icon-pill">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+          </div>
+          <span>Audit Log</span>
+          <span class="nav-badge" id="historyCountBadge">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="rules" aria-label="Standards Tab">
+          <div class="nav-icon-pill">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <span>Standards</span>
+        </button>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- Settings Bottom Sheet Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="font-size: 16px; font-weight: 700;">Scanner Engine Settings</h3>
+        <button type="button" class="icon-button" id="btnCloseModal" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="form-field">
+        <label for="apiKeyInput">Gemini Vision AI Key (Optional)</label>
+        <input type="password" id="apiKeyInput" class="stitch-input" placeholder="AIzaSy..." />
+        <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; line-height: 1.4;">
+          When left blank, the app uses the built-in offline heuristic engine with 100% uptime and sub-second response times.
+        </small>
+      </div>
+
+      <div style="background: var(--md-sys-color-surface-container-high); padding: 12px; border-radius: var(--radius-sm); font-size: 12px; color: var(--md-sys-color-on-surface);">
+        <strong>Standard:</strong> Legal Metrology (Packaged Commodities) Rules, 2011 & 2022 Unit Sale Price (USP) Amendment.
+      </div>
+
+      <button type="button" class="btn-stitch primary w-100" id="btnSaveApiKey">
+        Save Configuration
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="stitch-toast" id="toast"></div>
+
+  <!-- Core Scripts -->
+  <script src="/js/samples.js"></script>
+  <script src="/js/ocr_engine.js"></script>
+  <script src="/js/camera.js"></script>
+  <script src="/js/report_generator.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
