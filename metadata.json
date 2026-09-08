@@ -1,0 +1,6 @@
+{
+  "name": "LegalMetrology.AI",
+  "description": "Statutory Packaged Commodities Rules (PCR, 2011) label compliance engine with live camera OCR scanning, regulatory verification matrix, certificate generation, and compliance community hub.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
